@@ -2,25 +2,23 @@ from flask import Flask, request, jsonify
 from ultralytics import YOLO
 from PIL import Image
 import io
-import numpy as np
 
 app = Flask(__name__)
-
-# Carrega o modelo YOLOv8 treinado
 model = YOLO("best.pt")
+
+@app.route("/", methods=["GET"])
+def home():
+    return "API YOLOv8 local está rodando 🚀"
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
     if "image" not in request.files:
-        return jsonify({"error": "No image file found"}), 400
+        return jsonify({"error": "No image file uploaded"}), 400
 
     file = request.files["image"]
     image = Image.open(io.BytesIO(file.read())).convert("RGB")
     results = model(image)
-    detections = results[0].boxes
-
-    # Pega dados das caixas
-    boxes = detections.data.cpu().numpy() if detections is not None else []
+    boxes = results[0].boxes.data.cpu().numpy()
 
     return jsonify({
         "cromossomos": len(boxes),
@@ -34,10 +32,3 @@ def analyze():
             } for box in boxes
         ]
     })
-
-@app.route("/", methods=["GET"])
-def index():
-    return "API de detecção de cromossomos ativa 🚀"
-
-if __name__ == "__main__":
-    app.run(debug=True)
