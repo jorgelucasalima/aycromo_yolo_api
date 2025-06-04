@@ -1,4 +1,4 @@
-flask
-ultralytics
+flask==2.3.3
+ultralytics==8.0.188
+torch==2.1.0
 pillow
-torch
