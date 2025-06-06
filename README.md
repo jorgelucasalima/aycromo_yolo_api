@@ -18,6 +18,7 @@ O modelo `best.pt` foi treinado com YOLOv8 para detecção de cromossomos. Ele d
 
 ```python
 model = YOLO("best.pt")
+```
 
 ### ✅ Métricas principais do modelo
 
@@ -58,3 +59,4 @@ cd aycromo_yolo_api
 pip install -r requirements.txt
 
 python main.py
+```
