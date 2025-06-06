@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 from ultralytics import YOLO
 from PIL import Image
+from flask_cors import CORS
 import io
 
 app = Flask(__name__)
+CORS(app)
 model = YOLO("best.pt")
 
 @app.route("/", methods=["GET"])
@@ -32,3 +34,7 @@ def analyze():
             } for box in boxes
         ]
     })
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
